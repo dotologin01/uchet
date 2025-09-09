@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+
+{% block branding %}
+    {{ block.super }} {# Эта строка вставляет стандартный заголовок "Django administration" #}
+    
+    <div style="padding: 5px 0 0 10px; color: #ccc;">
+        <strong>Навигация по приложению:</strong>
+        <a href="{% url 'student_count' %}">Подсчет студентов</a> |
+        <a href="{% url 'discipline_info' %}">Информация о дисциплине</a>
+    </div>
+{% endblock %}
