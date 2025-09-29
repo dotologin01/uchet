@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +20,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-vdrhezqy!9#dph5jbln9)3=n@qb@wzvfu(flr(2j%w3qnbhczd'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key-for-dev')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*'] # Или os.environ.get('ALLOWED_HOSTS', '').split(',')
 
 
 # Application definition
@@ -74,13 +74,13 @@ WSGI_APPLICATION = 'student_tracker.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'uchet',          # <-- Имя из POSTGRES_DB
-        'USER': 'dotologin',         # <-- Имя из POSTGRES_USER
-        'PASSWORD': '201175633203Knok', # <-- Пароль из POSTGRES_PASSWORD
-        'HOST': '192.168.1.198',      # <-- IP-адрес вашего Synology NAS в локальной сети
-        'PORT': '5432',                 # <-- Стандартный порт PostgreSQL
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.environ.get('POSTGRES_HOST'),
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
 }
 
