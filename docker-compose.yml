@@ -21,17 +21,13 @@ services:
     # Django (в settings.py) будет их читать
     environment:
       # --- Секреты Django ---
-      # ВАЖНО: Замените 'your-secret-key-here' на ваш реальный ключ из settings.py
       - SECRET_KEY=201175633203Knok
       - DEBUG=False
-      # Можете указать IP вашей ВМ, или оставить '*', или настроить nginx для этого
-      - ALLOWED_HOSTS=*
+      - ALLOWED_HOSTS='*'
 
       # --- Настройки для подключения к ВНЕШНЕЙ базе данных ---
       - POSTGRES_DB=uchet
       - POSTGRES_USER=dotologin
-      # ВАЖНО: Замените на ваш реальный пароль от базы данных
       - POSTGRES_PASSWORD=201175633203Knok
-      # ВАЖНО: Укажите реальный IP-адрес вашего NAS, где работает PostgreSQL
       - POSTGRES_HOST=192.168.1.198
       - POSTGRES_PORT=5432
