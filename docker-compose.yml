@@ -49,3 +49,5 @@ services:
 volumes:
   postgres_data:
   static_volume:
+
+#docker-compose exec app python manage.py createsuperuser
