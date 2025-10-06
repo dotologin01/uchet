@@ -1,37 +1,51 @@
 version: '3.8'
 
 services:
-  app:
-    # Имя контейнера, который будет создан
-    container_name: student_app_container
-
-    # Инструкция по сборке образа
-    # 'build: .' означает "собрать образ из Dockerfile в текущей директории"
-    build: .
-
-    # Перезапускать контейнер, если он упал (кроме случая, когда он был остановлен вручную)
+  # --- Сервис Базы данных (PostgreSQL) ---
+  db:
+    image: postgres:14-alpine
+    container_name: student_db_container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-    # Проброс портов: [порт на хост-машине]:[порт внутри контейнера]
-    # Ваше приложение будет доступно на 8080 порту виртуальной машины
+  # --- Сервис Приложения (Django + Gunicorn) ---
+  app:
+    build: .
+    container_name: student_app_container
+    restart: unless-stopped
+    volumes:
+      - static_volume:/app/staticfiles
+    env_file:
+      - .env
+    command: sh /app/entrypoint.sh
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # --- Сервис Веб-сервера (Nginx) ---
+  nginx:
+    build: ./nginx
+    container_name: student_nginx_container
+    restart: unless-stopped
     ports:
       - "8080:80"
+    volumes:
+      - static_volume:/app/staticfiles
+    depends_on:
+      - app
 
-    # Переменные окружения, которые будут доступны внутри контейнера
-    # Django (в settings.py) будет их читать
-    environment:
-      # --- Секреты Django ---
-      # ВАЖНО: Замените 'your-secret-key-here' на ваш реальный ключ из settings.py
-      - SECRET_KEY=201175633203Knok
-      - DEBUG=False
-      # Можете указать IP вашей ВМ, или оставить '*', или настроить nginx для этого
-      - ALLOWED_HOSTS=*
-
-      # --- Настройки для подключения к ВНЕШНЕЙ базе данных ---
-      - POSTGRES_DB=uchet
-      - POSTGRES_USER=dotologin
-      # ВАЖНО: Замените на ваш реальный пароль от базы данных
-      - POSTGRES_PASSWORD=201175633203Knok
-      # ВАЖНО: Укажите реальный IP-адрес вашего NAS, где работает PostgreSQL
-      - POSTGRES_HOST=192.168.1.198
-      - POSTGRES_PORT=5432
+volumes:
+  postgres_data:
+  static_volume:
