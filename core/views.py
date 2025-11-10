@@ -4,10 +4,16 @@ from .models import Student, Discipline
 
 def student_count_view(request):
     form_of_study = request.GET.get('form', 'дневная')
-    count = Student.objects.filter(form_of_study=form_of_study).count()
+    
+    # Считаем студентов по выбранной форме обучения
+    count_by_form = Student.objects.filter(form_of_study=form_of_study).count()
+
+    total_count = Student.objects.count()
+
     context = {
         'form': form_of_study,
-        'count': count,
+        'count': count_by_form,
+        'total_count': total_count, # Добавляем новую переменную в контекст
         'all_forms': [choice[0] for choice in Student.FORM_OF_STUDY_CHOICES]
     }
     return render(request, 'core/student_count.html', context)
