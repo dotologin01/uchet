@@ -1,6 +1,7 @@
 # core/views.py
 from django.shortcuts import render
 from .models import Student, Discipline
+import pickle
 
 def student_count_view(request):
     form_of_study = request.GET.get('form', 'дневная')
