@@ -57,8 +57,8 @@ class ViewTests(TestCase):
 class AdminInterfaceTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.admin_user = User.objects.create_superuser(username='testadmin', email='admin@test.com', password='password123')
-        self.client.login(username='testadmin', password='password123')
+        self.admin_user = User.objects.create_superuser(username='testadmin', email='admin@test.com', password='password123') # nosec B106
+        self.client.login(username='testadmin', password='password123') # nosec B106
 
     def test_add_student_successfully(self):
         add_url = reverse('admin:core_student_add')
