@@ -34,10 +34,6 @@ class ModelTests(TestCase):
 class ViewTests(TestCase):
 
     def setUp(self):
-        """
-        Настраиваем начальные данные для всех тестов в этом классе.
-        Эта функция выполняется перед каждым тестом.
-        """
         self.client = Client()
         # Создаем студентов для проверки логики подсчета
         Student.objects.create(last_name="Петров", first_name="Петр", admission_year=2022, form_of_study="дневная", group_name="ИТ-201")
