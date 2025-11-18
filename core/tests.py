@@ -80,3 +80,5 @@ class ViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "не найдена")
         self.assertIsNone(response.context['discipline']) # Проверяем, что в контексте нет объекта
+
+    

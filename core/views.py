@@ -5,7 +5,7 @@ def student_count_view(request):
     form_of_study = request.GET.get('form', 'дневная')
     
     # Считаем студентов по выбранной форме обучения
-    count_by_form = Student.objects.count()
+    count_by_form = Student.objects.filter(form_of_study=form_of_study).count()
 
     total_count = Student.objects.count()
 
