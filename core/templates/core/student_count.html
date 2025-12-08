@@ -9,6 +9,12 @@
         .container { border: 1px solid #ccc; padding: 1em; border-radius: 5px; }
         .total { font-size: 1.2em; font-weight: bold; margin-top: 1em; padding-top: 1em; border-top: 1px solid #eee; }
     </style>
+    <div style="margin-bottom: 15px;">
+    <a href="/admin/">В админку</a> | 
+    <a href="{% url 'discipline_info' %}">Поиск дисциплины</a> |
+    <a href="{% url 'student_list' %}">Список студентов</a>
+    </div>
+
 </head>
 <body>
     <div class="container">

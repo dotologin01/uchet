@@ -25,4 +25,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('student-count/', views.student_count_view, name='student_count'),
     path('discipline-info/', views.discipline_info_view, name='discipline_info'),
+    path('student-list/', views.student_list_view, name='student_list'),
 ]

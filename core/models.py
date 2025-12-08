@@ -13,9 +13,13 @@ class Student(models.Model):
     admission_year = models.IntegerField(verbose_name="Год поступления")
     form_of_study = models.CharField(max_length=20, choices=FORM_OF_STUDY_CHOICES, verbose_name="Форма обучения")
     group_name = models.CharField(max_length=50, verbose_name="Номер/название группы")
+    email = models.EmailField(verbose_name="Email", blank=True, default='') 
 
     def __str__(self):
         return f"{self.last_name} {self.first_name}"
+    
+    def has_missing_data(self):
+        return not self.email
 
 class Discipline(models.Model):
     REPORT_FORM_CHOICES = [
