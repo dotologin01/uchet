@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список студентов</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .nav { margin-bottom: 20px; padding: 10px; background: #f0f0f0; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        
+        /* Стиль для строки с неполными данными (светло-красный фон) */
+        .row-incomplete { background-color: #fff0f0; }
+        
+        /* Стиль для текста предупреждения */
+        .missing-alert { color: red; font-weight: bold; font-size: 0.9em; }
+        
+        /* Ссылка на админку */
+        .edit-link { font-size: 0.8em; color: #666; text-decoration: none; margin-left: 10px;}
+        .edit-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- Навигация -->
+    <div class="nav">
+        <strong>Навигация:</strong>
+        <a href="/admin/">Админка</a> |
+        <a href="{% url 'student_count' %}">Подсчет</a> |
+        <a href="{% url 'discipline_info' %}">Поиск дисциплины</a> |
+        <span>Список студентов</span> (Вы здесь)
+    </div>
+
+    <h1>Полный список студентов</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Группа</th>
+                <th>Email (Новое поле)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <!-- Если данных не хватает, добавляем класс row-incomplete -->
+                <tr class="{% if student.has_missing_data %}row-incomplete{% endif %}">
+                    <td>{{ student.id }}</td>
+                    <td>
+                        {{ student.last_name }}
+                        <!-- Ссылка на редактирование в админке для удобства -->
+                        <a href="/admin/core/student/{{ student.id }}/change/" class="edit-link">[ред.]</a>
+                    </td>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.group_name }}</td>
+                    <td>
+                        {% if student.email %}
+                            {{ student.email }}
+                        {% else %}
+                            <!-- ЛОГИКА ПОДСВЕТКИ -->
+                            <span class="missing-alert">⚠️ НЕ ЗАПОЛНЕНО</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5">Студентов пока нет.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

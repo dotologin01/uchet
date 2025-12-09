@@ -27,3 +27,10 @@ def discipline_info_view(request):
         'discipline_name': discipline_name
     }
     return render(request, 'core/discipline_info.html', context)
+
+def student_list_view(request):
+    students = Student.objects.all().order_by('last_name')
+    context = {
+        'students': students
+    }
+    return render(request, 'core/student_list.html', context)
