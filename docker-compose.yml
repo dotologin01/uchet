@@ -23,7 +23,7 @@ services:
 
   # --- Сервис Приложения (Django + Gunicorn) ---
   app:
-    image: dotalogin01/uchet-app:${APP_IMAGE_TAG:-latest}
+    image: dotologin01/uchet-app:${APP_IMAGE_TAG:-latest}
     container_name: student_app_container
     restart: unless-stopped
     volumes:
@@ -37,7 +37,7 @@ services:
 
   # --- Сервис Веб-сервера (Nginx) ---
   nginx:
-    image: dotalogin01/uchet-nginx:${NGINX_IMAGE_TAG:-latest}
+    image: dotologin01/uchet-nginx:${NGINX_IMAGE_TAG:-latest}
     container_name: student_nginx_container
     restart: unless-stopped
     ports:
